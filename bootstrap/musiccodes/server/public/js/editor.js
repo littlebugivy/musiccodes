@@ -23,17 +23,7 @@ editorApp.config(['$routeProvider',
   }
 ]);
 
-editorApp.controller('ListCtrl', ['$scope', '$http', '$location', 'socket', function($scope,$http,$location, socket) {
-
-	socket.on('visualMsg', function(data){
-		console.log(data);
-		$scope.message = data;
-	});
-
-	$scope.sendStage = function(){
-		socket.emit('visualMsg', 'FROM MUZI-FRONT');
-	}
-
+editorApp.controller('ListCtrl', ['$scope', '$http', '$location', function($scope,$http,$location) {
 	$http.get('/experiences/').success(function(data) {
 		var experiences = [];
 		for (var name in data) {
@@ -763,25 +753,24 @@ editorApp.directive('urlchecker', ['$http', '$timeout', 'midiout', 'MIDI_HEX_PRE
 					return;
 				}
 				$scope.status = 'checking...';
-				$scope.status = 'OK';
-				// $http.get('/testiframeurl/?u='+encodeURIComponent(url)).success(function(data) {
-				// 	//console.log('test url (get) '+url);
-				// 	if (url!=$scope.ngModel)
-				// 		return;
-				// 	if (data=='0')
-				// 		$scope.status = 'OK';
-				// 	else if (data=='-1')
-				// 		$scope.status = 'HTTP error';
-				// 	else if (data=='-2')
-				// 		$scope.status = 'Cannot use in iframe';
-				// 	else if (data=='-3')
-				// 		$scope.status = 'Badly formed URL';
-				// 	else
-				// 		$scope.status = 'HTTP error ('+data+')';
-				// 	//$scope.status = $scope.status+' ('+data+')';
-				// }).error(function(data) {
-				// 	console.log('test url error '+data);
-				// });
+				$http.get('/testiframeurl/?u='+encodeURIComponent(url)).success(function(data) {
+					//console.log('test url (get) '+url);
+					if (url!=$scope.ngModel)
+						return;
+					if (data=='0')
+						$scope.status = 'OK';
+					else if (data=='-1')
+						$scope.status = 'HTTP error';
+					else if (data=='-2')
+						$scope.status = 'Cannot use in iframe';
+					else if (data=='-3')
+						$scope.status = 'Badly formed URL';
+					else
+						$scope.status = 'HTTP error ('+data+')';
+					//$scope.status = $scope.status+' ('+data+')';
+				}).error(function(data) {
+					console.log('test url error '+data);
+				});
 			};
 			$scope.click = function() {
 				reallyCheckurl($scope.ngModel);
