@@ -240,7 +240,7 @@
       		<label>Allowed error:</label><input type="number" step="0.1" min="0" ng-model="marker.inexactError">
       	</div>
       	<mus-code-matches examples="examples" code="marker.code" inexact="marker.inexact" inexact-error="marker.inexactError" projection="marker.projection" projections="projections" at-start="marker.atStart" at-end="marker.atEnd" is-simple="isSimple" parameters="parameters"></mus-code-matches>
-		<div uib-collapse="!showState">
+		<div uib-collapse="!showState">	
 		<label>Precondition:</label><input type="text" ng-model="marker.precondition">
 		<label>Post state:</label>
 	      <div class="var" ng-repeat="var in variables">
