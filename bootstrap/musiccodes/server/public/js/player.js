@@ -16,6 +16,12 @@ playerApp.controller('PlayerCtrl', ['$scope', '$http', '$location', 'socket', 'a
 		console.log('url: ' + $location.absUrl());
 		var proc = new NoteProcessor();
 		var params = $location.search();
+
+		socket.emit('vStart', 'start visual');
+		socket.on('vTimer', function (vtimer) {
+			$scope.vTimer = vtimer;
+		})
+
 		console.log('params', params);
 		var experienceFile = $scope.experienceFile = params['f'];
 		$scope.room = params['r'] === undefined ? 'default' : params['r'];
@@ -138,7 +144,7 @@ playerApp.controller('PlayerCtrl', ['$scope', '$http', '$location', 'socket', 'a
 					var retry = function (count) {
 						$http({
 							method: 'POST', url:
-								action.url,
+							action.url,
 							headers: { 'Content-Type': (action.contentType ? action.contentType : 'text/plain') },
 							data: (action.body ? action.body : '')
 						}).then(function (resp) {
@@ -183,7 +189,7 @@ playerApp.controller('PlayerCtrl', ['$scope', '$http', '$location', 'socket', 'a
 				}
 				else if (action.url.indexOf('data:text/plain') === 0 && action.url.indexOf('->') > 0) {  // visual
 					var visualInfo = action.url.split(',')[1];
-					socket.emit('visualMsg', visualInfo);
+					socket.emit('vStageChange', visualInfo);
 					console.log('send msg to visual: stage change: ' + visualInfo);
 				} else {
 					if ($scope.channel == action.channel && action.url) {

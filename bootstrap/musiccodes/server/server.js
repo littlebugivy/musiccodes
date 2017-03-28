@@ -709,9 +709,14 @@ function Client(socket) {
 	console.log('New client - connected to visualRoom');
 
 	socket.join('visualRoom');
-	socket.on('visualMsg', function (data) {
+	socket.on('vStageChange', function (data) {
 		console.log("MESSAGE FROM FRONT-END: " + data);
-		io.to('visualRoom').emit('visualMsg', data);
+		io.to('visualRoom').emit('vStageChange', data);
+	})
+
+	socket.on('vStart', function () {
+		console.log('visual on');
+		io.to('visualRoom').emit('vStart', 'start visual');
 	})
 
 	var self = this;
